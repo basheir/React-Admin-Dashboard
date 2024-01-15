@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsChatLeft } from "react-icons/bs";
@@ -23,15 +23,41 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
       <span
         style={{ background: dotColor }}
         className="absolute inline-flex rounded-full  h-2 w-2 right-2 top-2"
-      >
+      />
         {icon}
-      </span>
+    
     </button>
   </TooltipComponent>
 );
 
 const Navbar = () => {
-  const { activeMenu, setActiveMenu, isClicked, setIsClicked,handleClick } = useStateContext();
+  const {
+    activeMenu,
+    setActiveMenu,
+    isClicked,
+    setIsClicked,
+    handleClick,
+    screenSize,
+    setScreenSize,
+  } = useStateContext();
+
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+     if(screenSize <= 900) {
+      setActiveMenu(false)
+     }else {
+      setActiveMenu(true)
+     }
+  }, [screenSize])
+
+
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
       <NavButton
@@ -65,17 +91,19 @@ const Navbar = () => {
             className="flex items-center gap-2
           cursor-pointer  p-1
           hover:bg-light-gray rounded-lg"
-            onClick={() => handleClick("userProfile")}>
-              <img src={avatar}
-              className="rounded-full w-7 h-7"/>
-              <p>
-                <span className="text-gray-400  text-14">Hi, </span> {''}
-                <span className="text-gray-400 font-bold ml-1  text-14">Michael</span>
-              </p>
-              <MdKeyboardArrowDown className="text-gray-400  text-14" />
-            </div>
+            onClick={() => handleClick("userProfile")}
+          >
+            <img src={avatar} className="rounded-full w-7 h-7" />
+            <p>
+              <span className="text-gray-400  text-14">Hi, </span> {""}
+              <span className="text-gray-400 font-bold ml-1  text-14">
+                Michael
+              </span>
+            </p>
+            <MdKeyboardArrowDown className="text-gray-400  text-14" />
+          </div>
         </TooltipComponent>
-        
+
         {isClicked.cart && <Cart />}
         {isClicked.chat && <Chat />}
         {isClicked.notification && <Notification />}
