@@ -5,9 +5,10 @@ import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { links } from "../data/data/dummy.js";
+import { useStateContext } from "../contexts/ContextProvider.js";
 
 const Sidebar = () => {
-  const activeMenu = true;
+  const {activeMenu, setActiveMenu} = useStateContext()
   const isActive = false
 
   const activeLink =
@@ -25,7 +26,7 @@ const Sidebar = () => {
           <div className="flex justify-between items-center">
             <Link
               to="/"
-              onClick={() => {}}
+              onClick={() => setActiveMenu(false)}
               className="
               items-center gap-3 ml-3 mt-4 flex
               text-xl font-extrabold tracking-tight dark:text-white
@@ -37,6 +38,8 @@ const Sidebar = () => {
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button
+              type="button"
+              onClick={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
                 className="text-xl rounded-full
               p-3 hover:bg-light-gray mt-4 block"
               >

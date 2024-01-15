@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FiSettings, FieldSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
+import { useStateContext } from "./contexts/ContextProvider";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import {
   Ecommerce,
@@ -25,7 +25,8 @@ import {
 
 import "./App.css";
 const App = () => {
-  const activeMenu = true;
+  const {activeMenu} = useStateContext()
+
   return (
     <div>
       <BrowserRouter>
@@ -53,9 +54,8 @@ const App = () => {
 
           <div
             className={`dark:bg-main-bg bg-main-bg min-h-screen w-full ${
-              activeMenu ? "md:ml-72" : "flex-2"
-            }`}
-          >
+              activeMenu ? "md:ml-72" : "flex-2"}`
+            }>
             <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
               <Navbar />
             </div>
